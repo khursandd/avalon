@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% block title %}Kirim: {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-success text-white">
+      <h4 class="mb-0">Mahsulot kirimi: {{ product.name }}</h4>
+    </div>
+    <div class="card-body">
+      <p class="text-muted mb-1">
+  Всего произведено: {{ total_produced }} {{ product.get_unit_display }}
+</p>
+<p class="text-muted mb-1">
+  На складе: {{ current_qty }} {{ product.get_unit_display }}
+</p>
+<p class="text-muted mb-3">
+  Доступно к оприходованию: {{ available_to_add }} {{ product.get_unit_display }}
+</p>
+
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Miqdori ({{ product.get_unit_display }})</label>
+          <input type="number" step="0.01" min="0" name="value" class="form-control" placeholder="Miqdor kiriting">
+        </div>
+        <div class="d-flex justify-content-between">
+          <a href="{% url 'product_history' product.pk %}" class="btn btn-outline-secondary">Bekor qilish</a>
+          <button type="submit" class="btn btn-success">Qo'shish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

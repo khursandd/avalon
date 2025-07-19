@@ -1,0 +1,69 @@
+{% extends "main/base.html" %}
+{% block title %}Ishchi ishchini qo'shish{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white text-center">
+          <h2 class="h5 mb-0">Ishchi ishchini qo'shish</h2>
+        </div>
+
+        <div class="card-body">
+          {% if error %}
+            <div class="alert alert-danger text-center">{{ error }}</div>
+          {% endif %}
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            {# Работник (либо фиксированный, либо выбор) #}
+            {% if target_user %}
+              <div class="mb-3">
+                <label class="form-label">Ishchi</label>
+                <input type="text" class="form-control" value="{{ target_user.username }}" disabled>
+                <input type="hidden" name="worker" value="{{ target_user.username }}">
+              </div>
+            {% else %}
+              <div class="mb-3">
+                <label for="id_worker" class="form-label">Ishchi</label>
+                <select name="worker" id="id_worker" class="form-select" required>
+                  <option value="" disabled selected>-- ishchini tanlang --</option>
+                  {% for w in workers %}
+                    <option value="{{ w.username }}">{{ w.username }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endif %}
+
+            {# Продукт #}
+            <div class="mb-3">
+              <label for="id_product" class="form-label">Mahsulot</label>
+              <select name="product" id="id_product" class="form-select" required>
+                <option value="" disabled selected>-- mahsulotni tanlang --</option>
+                {% for p in products %}
+                  <option value="{{ p.id }}">{{ p.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            {# Количество #}
+            <div class="mb-3">
+              <label for="id_quantity" class="form-label">Miqdori</label>
+              <input type="number" name="quantity" id="id_quantity" class="form-control" min="0" placeholder="Masalan: 10" required>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+              <a href="{% url 'home' %}" class="btn btn-outline-secondary">Bekor qilish</a>
+              <button type="submit" class="btn btn-info text-white">Saqlash</button>
+            </div>
+          </form>
+        </div><!-- card-body -->
+      </div><!-- card -->
+
+    </div><!-- col -->
+  </div><!-- row -->
+</div><!-- container -->
+{% endblock %}

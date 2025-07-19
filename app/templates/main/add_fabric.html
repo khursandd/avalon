@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+{% block title %}Material qo'shish{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-success text-white text-center">
+            <h4 class="mb-0">Material qo'shish</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="text-end">
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Bekor qilish</a>
+                    <button type="submit" class="btn btn-success">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

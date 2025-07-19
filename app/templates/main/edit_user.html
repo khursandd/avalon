@@ -1,0 +1,63 @@
+{% extends 'main/base.html' %}
+{% block title %}Foydalanuvchini tahrirlash{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-primary text-white text-center">
+          <h2 class="h5 mb-0">Foydalanuvchini tahrirlash</h2>
+        </div>
+
+        <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} text-center">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Foydalanuvchi ismi -->
+            <div class="mb-3">
+              <label for="id_username" class="form-label">Foydalanuvchi ismi</label>
+              <input type="text" name="username" id="id_username" class="form-control"
+                     value="{{ user_obj.username }}" required>
+            </div>
+
+            <!-- Yangi parol -->
+            <div class="mb-3">
+              <label for="id_password" class="form-label">Yangi parol</label>
+              <input type="password" name="password" id="id_password" class="form-control"
+                     placeholder="Parolni o'zgartirmasangiz, bo'sh qoldiring" minlength="6">
+              <small class="text-muted">Kamida 6 ta belgidan iborat</small>
+            </div>
+
+            <!-- Guruh -->
+            <div class="mb-3">
+              <label for="id_group" class="form-label">Guruh</label>
+              <select name="group" id="id_group" class="form-select">
+                {% for group in groups %}
+                  <option value="{{ group.name }}" {% if current_group and current_group.name == group.name %}selected{% endif %}>
+                    {{ group.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Tugmalar -->
+            <div class="d-flex justify-content-between mt-4">
+              <a href="{% url 'view_user' user_obj.pk %}" class="btn btn-outline-secondary">Bekor qilish</a>
+              <button type="submit" class="btn btn-primary">Saqlash</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

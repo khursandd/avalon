@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% block title %}O'chirish{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-danger text-white text-center">
+          <h2 class="h5 mb-0">O'chirish</h2>
+        </div>
+
+        <div class="card-body text-center">
+          <p>Ha, siz <strong>{{ product.name }}</strong> mahsulotini o'chirishni xohlaysizmi?</p>
+
+          {% if product.image %}
+          <div class="mb-3">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded" style="max-height:150px; object-fit:cover;">
+          </div>
+          {% endif %}
+
+          {% if total_logs_count > 0 %}
+            <div class="alert alert-warning text-start mt-3">
+              <strong>Diqqat!</strong><br>
+              Ushbu mahsulot bilan bog'liq {{ total_logs_count }} yozuv{{ total_logs_count|pluralize:"ь,и" }} ishchilar jurnalida mavjud.
+              <ul class="mb-0 mt-2 small">
+                <li>FK bo'yicha: {{ logs_count_fk }}</li>
+                <li>Nomi bo'yicha: {{ logs_count_name }}</li>
+              </ul>
+              Ushbu yozuvlar O'chirilmaydi — bog'lanish nolga tenglanadi, nomi <code>product_name</code> maydonida saqlanadi.
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="card-footer d-flex justify-content-center gap-2">
+          <a href="{% url 'view_product' product.pk %}" class="btn btn-outline-secondary">Bekor qilish</a>
+          <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">O'chirish</button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

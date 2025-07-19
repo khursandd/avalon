@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+{% block title %}Tarix: {{ fabric.name }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Tarix: {{ fabric.name }}</h4>
+      <div>
+        <a href="{% url 'materials_in' fabric.pk %}" class="btn btn-success btn-sm me-1">➕ Kirim</a>
+        <a href="{% url 'materials_out' fabric.pk %}" class="btn btn-danger btn-sm">➖ Chiqim</a>
+      </div>
+    </div>
+    <div class="card-body p-0">
+
+      {% if transactions %}
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle mb-0 text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Tip</th>
+              <th>Kol-vo ({{ fabric.get_unit_display }})</th>
+              <th>Foydalanuvchi</th>
+              <th>Sana</th>
+              <th>Izoh</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in transactions %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>
+                {% if t.transaction_type == 'IN' %}
+                  <span class="badge bg-success">Kirim</span>
+                {% else %}
+                  <span class="badge bg-danger">Chiqim</span>
+                {% endif %}
+              </td>
+              <td>{{ t.amount }}</td>
+              <td>{{ t.user.username|default:"—" }}</td>
+              <td>{{ t.created_at|date:"Y-m-d H:i" }}</td>
+              <td>{{ t.note|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <div class="p-4 text-center text-muted">Hech qanday operatsiyalar yo'q.</div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

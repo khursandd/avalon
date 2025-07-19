@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ fabric.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <!-- Заголовок -->
+        <div class="card-header bg-primary text-white text-center rounded-top">
+            <h3 class="mb-0">{{ fabric.name }}</h3>
+        </div>
+
+        <!-- Фото -->
+        {% if fabric.image %}
+        <div class="text-center mt-3">
+            <img src="{{ fabric.image.url }}" class="img-fluid rounded shadow" style="max-width: 400px;" alt="{{ fabric.name }}">
+        </div>
+        {% else %}
+        <div class="text-center mt-3">
+            <p class="text-muted">Rasm yuklanmagan</p>
+        </div>
+        {% endif %}
+
+        <!-- Данные -->
+        <div class="card-body text-center">
+            <p class="card-text fs-5">
+                <strong>Soni:</strong> {{ fabric.quantity }} {{ fabric.get_unit_display }}
+            </p>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="card-footer text-center bg-light">
+            <a href="{% url 'edit_fabric' fabric.pk %}" class="btn btn-warning me-2">✏ Tahrirlash</a>
+            <a href="{% url 'delete_fabric' fabric.pk %}" class="btn btn-danger">🗑 O'chirish</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

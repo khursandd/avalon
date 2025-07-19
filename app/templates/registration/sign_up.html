@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Ro'yxatdan o'tish{% endblock %}
+
+{% block content %}
+<form method="post" action="/sign-up">
+  {% csrf_token %}
+  {{ form|crispy }}
+
+  <p>Hisobingiz bormi? Kirish <a href="{% url 'login' %}">Bu yerda</a></p>
+
+  <button type="submit" class="btn btn-success">Ro'yxatdan o'tish</button>
+</form>
+{% endblock %}
+

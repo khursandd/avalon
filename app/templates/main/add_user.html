@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% block title %}Ishchi qo'shish{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+      <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h2 class="h5 mb-0">Yangi ishchi qo'shish</h2>
+        </div>
+
+        <div class="card-body p-4">
+          {% if error %}
+            <div class="alert alert-danger text-center">{{ error }}</div>
+          {% endif %}
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Ishchi ismi -->
+            <div class="mb-3">
+              <label for="id_username" class="form-label">Ishchi ismi</label>
+              <input type="text" name="username" id="id_username" class="form-control" placeholder="Введите имя" required autofocus>
+            </div>
+
+            <!-- Parol -->
+            <div class="mb-3">
+              <label for="id_password" class="form-label">Parol</label>
+              <input type="password" name="password" id="id_password" class="form-control" placeholder="Parolni kiriting" minlength="6" required>
+              <small class="text-muted">Kamida 6 ta belgidan iborat</small>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="d-flex justify-content-between mt-4">
+              <a href="{% url 'home' %}" class="btn btn-outline-secondary w-45">Bekor qilish</a>
+              <button type="submit" class="btn btn-primary w-45">Yaratish</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

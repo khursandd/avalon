@@ -1,0 +1,89 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+    <!-- Фото продукта -->
+    {% if product.image %}
+      <img src="{{ product.image.url }}" class="card-img-top" style="max-height:300px; object-fit:cover;" alt="{{ product.name }}">
+    {% else %}
+      <img src="{% static 'images/no-image.png' %}" class="card-img-top" style="max-height:300px; object-fit:cover;" alt="Нет изображения">
+    {% endif %}
+
+    <div class="card-header bg-primary text-white text-center">
+      <h3 class="mb-0">{{ product.name }}</h3>
+    </div>
+
+    <div class="card-body">
+      <div class="row text-center">
+        <div class="col-md-4 mb-3">
+          <p class="fs-5 mb-1"><strong>Narxi / dona:</strong></p>
+          <p class="fw-bold">{{ product.price_per_unit|default:"0" }} UZS</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <p class="fs-5 mb-1"><strong>Всего произведено:</strong></p>
+          <p class="fw-bold">{{ total_qty|default:"0" }} {{ product.get_unit_display }}</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <p><strong>На складе:</strong> {{ product.quantity }} {{ product.get_unit_display }}</p>
+
+        </div>
+      </div>
+
+      <hr>
+
+      <p class="fs-5 text-center">
+        <strong>Стоимость остатка:</strong> 
+        {{ current_qty|default:"0" }} × {{ product.price_per_unit|default:"0" }} = 
+        <span class="fw-bold">{{ stock_value|default:"0" }} UZS</span>
+      </p>
+
+      <p class="text-muted text-center mb-0">
+        <strong>Oxirgi ishlab chiqarish:</strong> {{ last_date|date:"Y-m-d"|default:"—" }}
+      </p>
+    </div>
+
+    {% if can_manage %}
+      <div class="card-footer bg-light text-center d-flex justify-content-center gap-2 flex-wrap">
+        <a href="{% url 'add_worker_product' %}?product={{ product.id }}" class="btn btn-success btn-sm">➕ Qo'shish log</a>
+        <a href="{% url 'edit_product' product.pk %}" class="btn btn-warning btn-sm">✏ Tahrirlash</a>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if recent_logs %}
+    <div class="card shadow-sm border-0 rounded-4 mt-4">
+      <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">So'nggi yozuvlar</h4>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle text-center mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Ishchi</th>
+                <th>Miqdor</th>
+                <th>Sana</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for log in recent_logs %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ log.worker.username }}</td>
+                <td>{{ log.quantity }} {{ product.get_unit_display }}</td>
+                <td>{{ log.date|date:"Y-m-d" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
